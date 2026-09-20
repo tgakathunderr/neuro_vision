@@ -180,13 +180,15 @@ class TestVisionAdapter:
         brain, adapter, dataset = setup_system
         adapter.train_prototypes(dataset["prototypes"], include_saccades=True)
 
-        results = run_benchmark(adapter, dataset, verbose=False)
+        # 1. Raw Ventral Stream (Zero algorithmic preprocessing / pure CA3 learning >= 40%)
+        results_raw = run_benchmark(adapter, dataset, verbose=False, use_preprocessing=False)
+        assert results_raw["accuracy_pct"] >= 40.0, f"Expected raw CA3 >=40%, got {results_raw['accuracy_pct']}%"
 
-        # Assert empirical generalization meets or exceeds 80% threshold
-        assert results["accuracy_pct"] >= 80.0, f"Expected >=80% accuracy, got {results['accuracy_pct']}%"
+        # 2. Full Pipeline (With saccadic foveation & size constancy >= 80%)
+        results_full = run_benchmark(adapter, dataset, verbose=False, use_preprocessing=True)
+        assert results_full["accuracy_pct"] >= 80.0, f"Expected full pipeline >=80%, got {results_full['accuracy_pct']}%"
 
-        by_var = results["by_variation"]
-        # Invariance checks: Translation and Scale should be >= 80%
+        by_var = results_full["by_variation"]
         trans_acc = (by_var["translated"][0] / by_var["translated"][1]) * 100.0
         scale_acc = (by_var["scaled"][0] / by_var["scaled"][1]) * 100.0
         assert trans_acc >= 80.0, f"Translation invariance {trans_acc}% < 80%"
