@@ -1,5 +1,8 @@
 # Neuro-Vision: Biomimetic Ventral Visual Stream on BIB-2
 
+> **Status: superseded, with known issues (November 2026).** An internal audit found that recognition comes from OpenCV Gabor/FFT features and a Python nearest-neighbour lookup, not from BIB 2. Our current architecture, BIB-3, was rebuilt from that audit; see [unikai.in/research](https://www.unikai.in/research).
+
+
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Core: BIB-2](https://img.shields.io/badge/Core-BIB--2%20Human%20Nervous%20System-orange.svg)](https://github.com/tgakathunderr/BIB-2)
